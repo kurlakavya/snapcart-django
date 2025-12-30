@@ -1,0 +1,100 @@
+{% extends 'navigation.html' %}
+{% load static %}
+
+{% block body %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+
+<div class="d-flex" id="wrapper">
+
+  <!-- Sidebar -->
+  <div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="sidebar-heading">Start Filtering</div>
+    <div class="list-group list-group-flush">
+      <a href="{% url 'view_product' 0 %}" class="list-group-item list-group-item-action bg-light">
+        All Product
+      </a>
+      {% for i in cat %}
+        <a href="{% url 'view_product' i.id %}" class="list-group-item list-group-item-action bg-light">
+          {{ i.name }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  <!-- /#sidebar-wrapper -->
+
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+      <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+    </nav>
+
+    <div class="container-fluid mt-3">
+      <center><h2 style="color:red">View Product</h2></center>
+      <hr>
+
+      <h4>{{ cat1.name }}</h4>
+      <hr>
+
+      <!-- Carousel -->
+      <div id="productCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner row w-100 mx-auto">
+
+          {% for j in pro1 %}
+          <div class="carousel-item col-md-3 {% if forloop.first %}active{% endif %}">
+            <div class="card mb-3">
+              <center>
+                <img src="{{ j.image.url }}"
+                     class="card-img-top img-fluid"
+                     style="width:160px;height:170px"
+                     alt="product">
+              </center>
+
+              <div class="card-body text-center">
+                <h5 class="card-title">{{ j.name }}</h5>
+                <p>Rs. {{ j.price }}</p>
+                <p class="card-text">{{ j.desc }}</p>
+
+                <form action="{% url 'add_cart' j.id %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-primary btn-sm">
+                    Add to Cart
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <h5 class="text-danger">No products available</h5>
+          {% endfor %}
+
+        </div>
+
+        <!-- Controls -->
+        <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#productCarousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon"></span>
+        </a>
+      </div>
+      <!-- /Carousel -->
+
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+<script>
+  $("#menu-toggle").click(function (e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
+</script>
+
+{% endblock %}
