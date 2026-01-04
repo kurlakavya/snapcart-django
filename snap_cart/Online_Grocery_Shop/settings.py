@@ -25,9 +25,9 @@ SECRET_KEY = '7#q*9gbcacgr7=$k8k%ljvvi^u%m11!ak)&2$7pfe@##w&s45w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
-
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,6 +48,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'Online_Grocery_Shop.urls'
